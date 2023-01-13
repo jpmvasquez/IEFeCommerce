@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+<p></p>
+<h2>      Liste des utilisateurs</h2>
+<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Créer un compte</a>
+
+<font size="-1">
+    <table class="table table-striped table-bordered">
+   
+    
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Identifiant</td>
+            <td>Mot de passe</td>
+            <td>Telephone</td>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                 <td>@user.Id</td>
+                <td>
+                 <a class="nav-link text-black" asp-area="Identity" asp-page="/Account/Register"> @user.Email</a>
+                 </td>
+                   
+                 <td>@user.PasswordHash</td>
+                 <td>@user.PhoneNumber</td>
+                 
+                 
+                
+                 
+             </tr>
+        }
+    </tbody>
+    
+
+    </table>
+
+</font>

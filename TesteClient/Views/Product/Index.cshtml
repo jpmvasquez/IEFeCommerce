@@ -1,0 +1,79 @@
+﻿@model IEnumerable<TesteClient.Models.Products.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="div2">
+    <form class="d-flex" method="get" asp-controller="Product" asp-action="Index">
+        <input name="searchString" type="search">
+        <button class="btn btn-outline-dark " type="submit">Search</button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.productDetails)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.image)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.productType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.productTechno)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.productBrand)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.productDetails.id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.image.id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.productType.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.productTechno.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.productBrand.name)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+
+    <div class="row">

@@ -1,0 +1,93 @@
+﻿@model TesteClient.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Fiche Client";
+}
+
+<h4>FICHE CLIENT</h4>
+
+<div>
+    @*<h4>ApplicationUser</h4>*@
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Civility)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Civility)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BirthDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BirthDate)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+<h5 class="offset-sm-2">
+    Adresses
+</h5>
+<p class="offset-sm-2">
+    <a asp-controller="Adresse" asp-action="Create" asp-route-id="@Model?.Id">Nouvelle adresse</a>
+</p>
+@if (Model.ApplicationUserAdresses.Any())
+{
+    <table class="table offset-sm-2">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ApplicationUserAdresses.FirstOrDefault().Adresse.Num)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ApplicationUserAdresses.FirstOrDefault().Adresse.FullAddress)
+                
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            
+            
+            
+            @foreach (var item in Model.ApplicationUserAdresses)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Adresse.Num)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Adresse.FullAddress)
+                    </td>
+                    <td>
+                        <a asp-controller="Adresse" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-controller="Adresse" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-controller="Adresse" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-warning offset-sm-2">Aucune adresse à afficher pour cette personne</p>
+}

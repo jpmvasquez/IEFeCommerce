@@ -1,0 +1,58 @@
+﻿@{
+    string noEmptyBasketToolTip = string.Empty;
+    if (!(Model == null || Model.shoppingBasketSummary == null || Model.shoppingBasketSummary.shoppingBasketItems.Count() == 0))
+    {   
+        foreach(ShoppingBasketItem shoppingBasketItem in Model.shoppingBasketSummary.shoppingBasketItems)
+        {
+            noEmptyBasketToolTip += string.Format($"{@shoppingBasketItem.product.productBrand.name} {@shoppingBasketItem.product.name} qté: {@shoppingBasketItem.qtyOrdered} sousTotal {@shoppingBasketItem.subTotal}\n");
+        }
+
+        noEmptyBasketToolTip += $"Total: {Model.totalPrice} euros";
+    }
+}
+
+@using TesteClient.Data.ViewModels;
+@model ShoppingBasketVM;
+@*@{
+    ViewData["shoppingBasketVM"] = Model;
+}*@
+@if (Model == null || Model.shoppingBasketSummary == null || Model.shoppingBasketSummary.shoppingBasketItems.Count() == 0)
+{
+    <button  type="button" class="btn btn-dark position-relative" data-toggle="tooltip" title="Auncun product sélectionné">
+    Panier
+    <span class="position-absolute top-0 start-80 translate-middle badge rounded-pill bg-danger">
+        0
+        <span class="visually-hidden">Panier</span>
+    </span>
+</button>
+@*<ul>
+    <li>
+        Auncun product sélectionné
+    </li>
+</ul>*@
+}
+else
+{
+    <form asp-controller="Command" asp-action="ShoppingBasket" enctype="multipart/form-data">
+        <button type="submit" asp-controller="Command" asp-action="ShoppingBasket" class="btn btn-dark position-relative" data-toggle="tooltip" title="@noEmptyBasketToolTip">
+        Panier
+        <span class="position-absolute top-0 start-80 translate-middle badge rounded-pill bg-danger">
+            @Model.shoppingBasketSummary.shoppingBasketItems.Count()
+            <span class="visually-hidden">Panier</span>
+        </span>
+    </button>
+    @*<form asp-controller="Command" asp-action="ShoppingBasket" enctype="multipart/form-data">
+        <ul>
+            @foreach(ShoppingBasketItem shoppingBasketItem in Model.shoppingBasketSummary.shoppingBasketItems)
+            {
+                <li>
+                    <input asp-for="@shoppingBasketItem.product.name" class="form-control" readonly/>
+                    @shoppingBasketItem.product.productBrand.name @shoppingBasketItem.product.name @shoppingBasketItem.qtyOrdered @shoppingBasketItem.subTotal
+                </li>
+            }
+            <li>Total: @Model.totalPrice euros</li>
+            <input type="submit" value="Achat" class="btn btn-primary" />
+            <button>Achat</button>
+        </ul>*@
+    </form>
+}

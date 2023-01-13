@@ -1,0 +1,41 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout;
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+@*<nav class="nav nav-pills justify-content-end">
+  <a class="nav-link" href="#">Gestion des commandes</a>
+  <a class="nav-link" href="#">Historiques des commandes</a>
+  <a class="nav-link" href="#">Link</a>
+  <a class="nav-link disabled" href="#">Disabled</a>
+</nav>*@
+<nav class="navbar navbar-dark bg-dark nav nav-pills justify-content-end">
+    <a class="nav-link" href="#">Gestion des commandes</a>
+    <a class="nav-link" href="#">Historiques des commandes</a>
+    <a class="nav-link" href="#">Accueil</a>
+    <a class="nav-link disabled" href="#">Mes cartes</a>
+</nav>
+
+<h3>Mise à jour de votre compte</h3>
+
+<div>
+    <h4>Paneau de données pesonnelles</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="col-md-9">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

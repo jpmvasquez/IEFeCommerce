@@ -1,0 +1,10 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirmation de l'email";
+}
+
+<a asp-controller="ApplicationUser" asp-action="Details" asp-route-id="@ViewData["IdClient"]">Adresse</a> 
+<h4>@ViewData["Title"]</h4>
+<h5>@ViewData["IdClient"]</h5>
+<partial name="_StatusMessage" model="Model.StatusMessage" />

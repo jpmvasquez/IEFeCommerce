@@ -1,0 +1,82 @@
+﻿@model TesteClient.Models.Products.Product
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="price" class="control-label"></label>
+                <input asp-for="price" class="form-control" />
+                <span asp-validation-for="price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="productDetails.resolution" class="control-label"></label>
+                <input type="number" asp-for="productDetails.resolution" />
+                <span asp-validation-for="productDetails.resolution" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="productDetails.zoomOptic" class="control-label"></label>
+                <input type="number" asp-for="productDetails.zoomOptic" />
+                <span asp-validation-for="productDetails.zoomOptic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="productDetails.video" class="control-label"></label>
+                <input type="number" asp-for="productDetails.video" />
+                <span asp-validation-for="productDetails.video" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="productDetails.stabilisator" class="control-label"></label>
+                <input type="checkbox" asp-for="productDetails.stabilisator" />
+                <span asp-validation-for="productDetails.stabilisator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="productDetails.isoMax" class="control-label"></label>
+                <input type="number" asp-for="productDetails.isoMax" />
+                <span asp-validation-for="productDetails.isoMax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="image.formFile" class="control-label"></label>
+                <input asp-for="image.formFile" accept="image/*" />
+                <span asp-validation-for="image.formFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="productTypeId" class="control-label"></label>
+                <select asp-for="productTypeId" class="form-control" asp-items="ViewBag.productTypeId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="productTechnoId" class="control-label"></label>
+                <select asp-for="productTechnoId" class="form-control" asp-items="ViewBag.productTechnoId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="productBrandId" class="control-label"></label>
+                <select asp-for="productBrandId" class="form-control" asp-items="ViewBag.productBrandId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

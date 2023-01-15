@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TesteClient.Data;
@@ -25,7 +26,8 @@ namespace TesteClient.Controllers
             var applicationDbContext = _context.ApplicationUserAdresse
                 .Include(a => a.Adresse)
                 .Include(a => a.ApplicationUser);
-            return View(await applicationDbContext.ToListAsync());
+            return View("Areas/Identity/Pages/Account/Manage/Adress", await applicationDbContext.ToListAsync());
+            //return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: ApplicationUserAdresse/Details/5

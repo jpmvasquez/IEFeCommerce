@@ -18,10 +18,10 @@ namespace TesteClient.Models.Commands
 
         public int productId { get; set; }
         [ForeignKey("productId")]
-        public Product product { get; set; }
+        public Product? product { get; set; }
 
         public int orderId { get; set; }
         [ForeignKey("orderId")]
-        public Order order { get; set; }
+        public Order? order { get; set; }
     }
 }

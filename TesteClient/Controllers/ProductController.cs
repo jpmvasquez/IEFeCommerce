@@ -93,10 +93,6 @@ namespace TesteClient.Controllers
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-
-
-
-
             }
             ViewData["productBrandId"] = new SelectList(_context.Brand, "id", "name", product.productBrandId);
             ViewData["productTechnoId"] = new SelectList(_context.Techno, "id", "name", product.productTechnoId);

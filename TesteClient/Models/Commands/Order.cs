@@ -23,11 +23,14 @@ namespace TesteClient.Models.Commands
         public DateTime orderDate { get; set; }
 
         public int addressId { get; set; }
-        public Adresse address { get; set; }
+        [ForeignKey("addressId")]
+        public virtual Adresse address { get; set; }
 
         public decimal totalPrice { get; set; }
 
 
-        //public string reference => string.Format($"{userId.Substring(5)}{orderDate.ToString()}{id.ToString()}");
+        public string reference { get; set; }/* => string.Format($"{userId.Substring(5)}{orderDate.ToString()}{id.ToString()}");*/
+
+        public Order() { }
     }
 }

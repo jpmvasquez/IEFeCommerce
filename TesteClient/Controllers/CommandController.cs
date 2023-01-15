@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using TesteClient.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Execution;
 
 namespace TesteClient.Controllers
 {
@@ -19,6 +21,7 @@ namespace TesteClient.Controllers
         public static List<ShoppingBasketItem> _shoppingBasketItems = new List<ShoppingBasketItem>();
         public static ShoppingBasketSummary _shoppingBasketSummary = new ShoppingBasketSummary();
         public static ShoppingBasketVM _shoppingBasketVM = new ShoppingBasketVM();
+        public static List<OrderDetails> _orderItems = new List<OrderDetails>();
 
         public CommandController(ApplicationDbContext context)
         {
@@ -49,24 +52,48 @@ namespace TesteClient.Controllers
                     product = shoppingBasketItem.product,
                 });
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ApplicationUser currentUser = _context.Users.Find(userId);
+            ApplicationUser currentUser = _context.Users
+                .Include(u => u.ApplicationUserAdresses)
+                .ThenInclude(a => a.Adresse)
+                .Where(u => u.Id == userId)
+                .ToList()[0];
+            Order currentOrder = new Order();
+            currentOrder.orderItems = orderDetails;
+            _orderItems = orderDetails;
             List<ApplicationUserAdresse> currentUserAddresses = currentUser.ApplicationUserAdresses;
-            
-            return View("Order", orderDetails);
+            List<Adresse> adresses = new List<Adresse>();
+            foreach (var ad in currentUserAddresses)
+                adresses.Add(ad.Adresse);
+            ViewData["userAdressesId"] = new SelectList(adresses, "Id", "FullAddress");
+            return View("Order", currentOrder);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CompleteOrder(Order order)
         {
+            decimal totalPrice = 0;
+            foreach(var item in _orderItems)
+    {
+                totalPrice += item.price;
+            }
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            _context.OrderDetails
-                .Include(od => od.product)
-                .Include(od => od.order);
-            _context.Order
-                .Include(o => o.address)
-                .Include(o => o.user);
-            return View("Order", order);
+            order.orderDate = DateTime.Now;
+            order.userId = userId;
+            //order.orderItems = _orderItems;
+            order.totalPrice = totalPrice;
+            order.reference = string.Format($"{userId.Substring(5)}{order.orderDate.ToString()}");
+            //_context.Order.Add(order);
+            _context.Order.Add(order);
+            foreach (var item in _orderItems)
+            {
+                item.order = order;
+                item.productId = item.product.id;
+                item.product = null;
+            }
+            _context.AddRange(_orderItems);
+            _context.SaveChanges();
+            return View("OrderSuccess");
         }
 
         [HttpPost]

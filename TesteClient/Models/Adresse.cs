@@ -38,5 +38,26 @@ namespace TesteClient.Models
             public virtual ICollection<ApplicationUserAdresse>? ApplicationUserAdresses { get; set; }
         
         public Adresse() { }
+
+        public Adresse(int Id, string Num, string Road, string Complement, string ZipCode, 
+            string City)
+        {
+            this.Id = Id;
+            this.Num = Num;
+            this.Road = Road;
+            this.Complement = Complement;
+            this.ZipCode = ZipCode;
+            this.City = City;
+        }
+
+        public Adresse(string Num, string Road, string Complement, string ZipCode,
+            string City)
+        {
+            this.Num = Num;
+            this.Road = Road;
+            this.Complement = Complement;
+            this.ZipCode = ZipCode;
+            this.City = City;
+        }
     }
 }

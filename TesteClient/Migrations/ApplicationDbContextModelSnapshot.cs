@@ -299,17 +299,17 @@ namespace TesteClient.Migrations
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Civility = 0,
-                            ConcurrencyStamp = "d6a373f7-e103-4167-9d55-d44005d2194b",
+                            ConcurrencyStamp = "424391c4-de5a-494a-8372-8cf4db3889d2",
                             Email = "Admin@test.com",
                             EmailConfirmed = true,
                             FirstName = "MONTIZA",
                             LastName = "Tira",
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN@TEST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPlYJMZc1T+gqBJc4ca/Iugk+CnheAqxa9AR8mjZyfjDoW4kW0/BfXGrwgvQ/l2B8A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPzpP1YyLomWeb8iEdH3RMDQ/KO5AhhvdbarXO4tiEnhOjdUhSVsAgv1AzeUohMdQw==",
                             PhoneNumber = "0666673314",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "e8edfff7-e3e0-4ea7-a2f6-b0ef89a77ed5",
+                            SecurityStamp = "cfc505c2-22b6-4112-9a07-1e06fe0bed54",
                             TwoFactorEnabled = false,
                             UserName = "Admin@test.com"
                         });
@@ -352,6 +352,10 @@ namespace TesteClient.Migrations
 
                     b.Property<DateTime>("orderDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("reference")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("totalPrice")
                         .HasColumnType("decimal(18,2)");

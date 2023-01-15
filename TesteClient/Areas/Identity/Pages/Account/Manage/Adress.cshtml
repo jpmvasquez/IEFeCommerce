@@ -1,0 +1,60 @@
+﻿@page
+@model AdressModel
+@{
+    ViewData["Title"] = "Adresses";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+<p>
+   Mes Adresses
+</p>
+<a asp-page="./AddAdress">Ajouter une nouvelle adresse</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Numéros de la voie
+            </th>
+            <th>
+                Voie
+            </th>
+            <th>
+                Code Postal
+            </th>
+            <th>
+                Ville
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Input.applicationUserAdresses == null || Model.Input.applicationUserAdresses.Count == 0)
+        {
+            <p>Aucune addresse n'a été enregistrée</p>
+        }
+        else
+        {
+        @for (int i = 0; i < Model.Input.applicationUserAdresses.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.Input.applicationUserAdresses[i].Adresse.Num)
+                </td>
+                    <td>
+                    @Html.DisplayFor(model => model.Input.applicationUserAdresses[i].Adresse.Road)
+                    </td>
+    <td>
+                    @Html.DisplayFor(model => model.Input.applicationUserAdresses[i].Adresse.ZipCode)
+                    </td>
+    <td>
+                    @Html.DisplayFor(model => model.Input.applicationUserAdresses[i].Adresse.City)
+                    </td>
+
+                <td>
+                            <a asp-action="Edit" asp-route-id="@Model.Input.applicationUserAdresses[i].Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@Model.Input.applicationUserAdresses[i].Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@Model.Input.applicationUserAdresses[i].Id">Delete</a>
+                </td>
+            </tr>
+        }
+        }
+    </tbody>
+</table>

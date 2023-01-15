@@ -15,8 +15,10 @@
   <a class="nav-link disabled" href="#">Disabled</a>
 </nav>*@
 <nav class="navbar navbar-dark bg-dark nav nav-pills justify-content-end">
-    <a class="nav-link" href="#">Gestion des commandes</a>
-    <a class="nav-link" href="#">Historiques des commandes</a>
+    <a class="nav-link @ManageNavPages.AdressNavClass(ViewContext)" id="profile" asp-page="./Adress">Adresses</a>
+    @*<a class="nav-link @ManageNavPages.AdressNavClass(ViewContext)" id="profile" asp-asp-page="./Adress">Adresses</a>*@
+    <a class="nav-link @ManageNavPages.HistoricOrderNavClass(ViewContext)" id="profile" asp-page="./OrdersHistory">Historique des commandes</a>
+    @*<a class="nav-link" href="#">Historiques des commandes</a>*@
     <a class="nav-link" href="#">Accueil</a>
     <a class="nav-link disabled" href="#">Mes cartes</a>
 </nav>

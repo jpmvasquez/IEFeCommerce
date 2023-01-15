@@ -12,8 +12,8 @@ using TesteClient.Data;
 namespace TesteClient.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230113095200_seed_db_prod")]
-    partial class seed_db_prod
+    [Migration("20230114193426_mig")]
+    partial class mig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -301,17 +301,17 @@ namespace TesteClient.Migrations
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Civility = 0,
-                            ConcurrencyStamp = "ddfeb46f-0e22-43b8-be3b-4bc53bbe7eb1",
+                            ConcurrencyStamp = "424391c4-de5a-494a-8372-8cf4db3889d2",
                             Email = "Admin@test.com",
                             EmailConfirmed = true,
                             FirstName = "MONTIZA",
                             LastName = "Tira",
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN@TEST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEZt4hCK+CqflRs45KVVO2Hd7ivC28LndIBTj+xHGauR5708dOPDGAEv7FH7lqUXag==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPzpP1YyLomWeb8iEdH3RMDQ/KO5AhhvdbarXO4tiEnhOjdUhSVsAgv1AzeUohMdQw==",
                             PhoneNumber = "0666673314",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "ece4214d-254f-4757-a304-d148dadb8177",
+                            SecurityStamp = "cfc505c2-22b6-4112-9a07-1e06fe0bed54",
                             TwoFactorEnabled = false,
                             UserName = "Admin@test.com"
                         });
@@ -339,6 +339,69 @@ namespace TesteClient.Migrations
                     b.HasIndex("IdApplicationUser");
 
                     b.ToTable("ApplicationUserAdresse");
+                });
+
+            modelBuilder.Entity("TesteClient.Models.Commands.Order", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<int>("addressId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("orderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("reference")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("totalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("userId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("addressId");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("TesteClient.Models.Commands.OrderDetails", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<int>("orderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("productId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("qty")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("orderId");
+
+                    b.HasIndex("productId");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("TesteClient.Models.Products.Brand", b =>
@@ -700,6 +763,44 @@ namespace TesteClient.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("TesteClient.Models.Commands.Order", b =>
+                {
+                    b.HasOne("TesteClient.Models.Adresse", "address")
+                        .WithMany()
+                        .HasForeignKey("addressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TesteClient.Models.ApplicationUser", "user")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("address");
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("TesteClient.Models.Commands.OrderDetails", b =>
+                {
+                    b.HasOne("TesteClient.Models.Commands.Order", "order")
+                        .WithMany("orderItems")
+                        .HasForeignKey("orderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TesteClient.Models.Products.Product", "product")
+                        .WithMany()
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("order");
+
+                    b.Navigation("product");
+                });
+
             modelBuilder.Entity("TesteClient.Models.Products.Product", b =>
                 {
                     b.HasOne("TesteClient.Models.Products.Image", "image")
@@ -751,6 +852,11 @@ namespace TesteClient.Migrations
             modelBuilder.Entity("TesteClient.Models.ApplicationUser", b =>
                 {
                     b.Navigation("ApplicationUserAdresses");
+                });
+
+            modelBuilder.Entity("TesteClient.Models.Commands.Order", b =>
+                {
+                    b.Navigation("orderItems");
                 });
 #pragma warning restore 612, 618
         }

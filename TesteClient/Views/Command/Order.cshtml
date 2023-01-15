@@ -1,12 +1,12 @@
 ﻿@using TesteClient.Models.Commands;
-@model IEnumerable<OrderDetails>;
+@model Order;
 
 @{
     ViewData["Title"] = "Résumé de vos commandes";
-    decimal totalOrders = 0;
-    @foreach (var item in Model)
+    decimal totalPrice = 0;
+    @foreach (var item in Model.orderItems)
     {
-        totalOrders += item.price;
+        totalPrice += item.price;
     }
 }
 
@@ -15,7 +15,7 @@
         <div class="text-center">
             <h2>Résumé de vos commandes</h2>
         </div>
-
+        <form asp-controller="Command" asp-action="CompleteOrder" enctype="multipart/form-data">
         <table class="table">
             <thead>
                 <tr>
@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.orderItems)
                 {
                     <tr>
                         <td class="align-middle">@item.qty</td>
@@ -41,23 +41,28 @@
                 <tr>
                     <td colspan="2"></td>
                     <td><b>Total:</b></td>
-                    <td>
-                        @totalOrders.ToString("c")
+                    <td name="@totalPrice">
+                        @totalPrice.ToString("c")
                     </td>
                     <td></td>
                 </tr>
             </tfoot>
         </table>
-
         <div class="text-right">
             <div class="btn-group">
-                <form asp-controller="Command" asp-action="ShoppingBasket" enctype="multipart/form-data">
-                <button type="submit" class="btn btn-outline-primary" asp-controller="Command" asp-action="CompleteOrder">
-                    Enregistrer la commande
-                </button>
-                </form>
-            </div>
+    @*<form asp-controller="Command" asp-action="CompleteOrder" enctype="multipart/form-data">*@
+        <div>
+            <p>Sélectionner l'adresse à laquelle vous voulez être livré:</p>
+                        @*<label asp-for="addressId" class="control-label"></label>*@
+                <select asp-for="addressId" class="form-control" asp-items="ViewBag.userAdressesId"></select>
         </div>
-
+        <button type="submit" class="btn btn-outline-primary" asp-controller="Command" asp-action="CompleteOrder">
+            Enregistrer la commande
+        </button>
+     </form>
+</div>
+            @*<partial name="_OrderAddress"/>
+            @Html.Partial("_OrderAddress", model: Model.address)*@
+        </div>
     </div>
 </div>

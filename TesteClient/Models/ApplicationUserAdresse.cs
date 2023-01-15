@@ -24,10 +24,10 @@ namespace TesteClient.Models
         [DisplayName("Adresse")]
         public virtual Adresse? Adresse { get; set; }
 
-        ApplicationUserAdresse()
+        public ApplicationUserAdresse()
         { }
-        
-     
+
+
         public ApplicationUserAdresse(
             string IdApplicationUser,
             int IdAdresse)
@@ -35,6 +35,5 @@ namespace TesteClient.Models
             this.IdApplicationUser = IdApplicationUser;
             this.IdAdresse = IdAdresse;
         }
-
     }
 }

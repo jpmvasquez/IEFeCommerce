@@ -1,0 +1,15 @@
+﻿@using TesteClient.Models.Commands
+@model Order
+
+<div class="btn-group">
+    <form asp-controller="Command" asp-action="CompleteOrder" enctype="multipart/form-data">
+        <div>
+            <p>Sélectionner l'adresse à laquelle vous voulez être livré'</p>
+            @*<label asp-for="addressId" class="control-label"></label>
+            <select asp-for="addressId" class="form-control" asp-items="ViewBag.userAdressesId"></select>*@
+        </div>
+        <button type="submit" class="btn btn-outline-primary" asp-controller="Command" asp-action="CompleteOrder">
+            Enregistrer la commande
+        </button>
+     </form>
+</div>

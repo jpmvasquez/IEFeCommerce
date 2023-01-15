@@ -12,8 +12,8 @@ using TesteClient.Data;
 namespace TesteClient.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230113131247_seed_db_order")]
-    partial class seed_db_order
+    [Migration("20230114124615_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -301,17 +301,17 @@ namespace TesteClient.Migrations
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Civility = 0,
-                            ConcurrencyStamp = "3a8d2019-99c7-4dc2-8e5e-ec1c4f86d248",
+                            ConcurrencyStamp = "4e2e6675-ba28-4cd4-aef6-7bd2755ca12c",
                             Email = "Admin@test.com",
                             EmailConfirmed = true,
                             FirstName = "MONTIZA",
                             LastName = "Tira",
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN@TEST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBua5ASuMRIychOHq6NT79IvbircTWWr/mfrnpXTQkw1X417UU7/GBtexPQ0kGtkTA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELmLlG8F36eSIS0M/ZZjrxrVR9ZXljtax02q03OSaxTLPrkXc4DuGVSN10xueHuQ8w==",
                             PhoneNumber = "0666673314",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "a780d4d2-8554-4b0f-a8df-97a61827789a",
+                            SecurityStamp = "dfda2bae-d67c-424c-9a8a-06917184aac1",
                             TwoFactorEnabled = false,
                             UserName = "Admin@test.com"
                         });
@@ -354,6 +354,13 @@ namespace TesteClient.Migrations
 
                     b.Property<DateTime>("orderDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("reference")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("totalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("userId")
                         .IsRequired()

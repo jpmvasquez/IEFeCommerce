@@ -15,6 +15,8 @@ namespace  TesteClient.Areas.Identity.Pages.Account.Manage
     /// </summary>
     public static class ManageNavPages
     {
+        public static string HistoricOrder => "HistoricOrder";
+        public static string Adress => "Adress";
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -62,6 +64,10 @@ namespace  TesteClient.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
+
+        public static string HistoricOrderNavClass(ViewContext viewContent) => PageNavClass(viewContent, HistoricOrder);
+
+        public static string AdressNavClass(ViewContext viewContext) => PageNavClass(viewContext, Adress);
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

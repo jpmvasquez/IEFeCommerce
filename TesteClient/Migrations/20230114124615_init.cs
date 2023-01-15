@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TesteClient.Migrations
 {
-    public partial class init_db : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -273,6 +273,35 @@ namespace TesteClient.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Order",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    userId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    orderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    addressId = table.Column<int>(type: "int", nullable: false),
+                    totalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    reference = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Order_Adresses_addressId",
+                        column: x => x.addressId,
+                        principalTable: "Adresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Order_AspNetUsers_userId",
+                        column: x => x.userId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
                 {
@@ -321,6 +350,34 @@ namespace TesteClient.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    qty = table.Column<int>(type: "int", nullable: false),
+                    price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    productId = table.Column<int>(type: "int", nullable: false),
+                    orderId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Order_orderId",
+                        column: x => x.orderId,
+                        principalTable: "Order",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Product_productId",
+                        column: x => x.productId,
+                        principalTable: "Product",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -329,12 +386,76 @@ namespace TesteClient.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "Civility", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "02174cf0–9412–4cfe - afbf - 59f706d72cf6", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "bc3f3ecf-7c62-44b1-8dce-5db3fd223d08", "Admin@test.com", true, "MONTIZA", "Tira", false, null, null, "ADMIN@TEST.COM", "AQAAAAEAACcQAAAAEPeEL6I7dHKgs/fXUs5WS1SAoN/EG9rB26UGhE2CloBq98YGq+KCC//A/sNl6/Wm7Q==", "0666673314", true, "4f58a1f5-9b34-4fbe-a60b-653fa809577c", false, "Admin@test.com" });
+                values: new object[] { "02174cf0–9412–4cfe - afbf - 59f706d72cf6", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "4e2e6675-ba28-4cd4-aef6-7bd2755ca12c", "Admin@test.com", true, "MONTIZA", "Tira", false, null, null, "ADMIN@TEST.COM", "AQAAAAEAACcQAAAAELmLlG8F36eSIS0M/ZZjrxrVR9ZXljtax02q03OSaxTLPrkXc4DuGVSN10xueHuQ8w==", "0666673314", true, "dfda2bae-d67c-424c-9a8a-06917184aac1", false, "Admin@test.com" });
+
+            migrationBuilder.InsertData(
+                table: "Brand",
+                columns: new[] { "id", "name" },
+                values: new object[,]
+                {
+                    { 1, "Sony" },
+                    { 2, "Kodak" },
+                    { 3, "Panasonic" },
+                    { 4, "Nikon" },
+                    { 5, "Olympus" },
+                    { 6, "Fujifilm" },
+                    { 7, "Canon" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Image",
+                columns: new[] { "id", "name" },
+                values: new object[,]
+                {
+                    { 1, "DC-FZ82 EF-K.webp" },
+                    { 2, "DC-FZ82 EF-K.webp" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductDetails",
+                columns: new[] { "id", "isoMax", "resolution", "stabilisator", "video", "zoomOptic" },
+                values: new object[,]
+                {
+                    { 1, "1", "D80", true, "1", "1" },
+                    { 2, "1", "D80", false, "1", "1" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductType",
+                columns: new[] { "id", "description", "name" },
+                values: new object[,]
+                {
+                    { 1, null, "Reflex" },
+                    { 2, null, "Hybride" },
+                    { 3, null, "Bridge" },
+                    { 4, null, "Compact" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Techno",
+                columns: new[] { "id", "description", "name" },
+                values: new object[,]
+                {
+                    { 1, null, "Numérique" },
+                    { 2, null, "Argentique" },
+                    { 3, null, "Instantanée" },
+                    { 4, null, "Jetable" }
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[] { "341743f0 - asd2–42de - afbf - 59kmkkmk72cf6", "02174cf0–9412–4cfe - afbf - 59f706d72cf6" });
+
+            migrationBuilder.InsertData(
+                table: "Product",
+                columns: new[] { "id", "imageId", "name", "price", "productBrandId", "productDetailsId", "productTechnoId", "productTypeId" },
+                values: new object[] { 1, 1, "D80", "1200,99", 1, 1, 1, 2 });
+
+            migrationBuilder.InsertData(
+                table: "Product",
+                columns: new[] { "id", "imageId", "name", "price", "productBrandId", "productDetailsId", "productTechnoId", "productTypeId" },
+                values: new object[] { 2, 2, "Canon D80", "1400,00", 2, 2, 3, 3 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUserAdresse_IdAdresse",
@@ -386,6 +507,26 @@ namespace TesteClient.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Order_addressId",
+                table: "Order",
+                column: "addressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_userId",
+                table: "Order",
+                column: "userId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_orderId",
+                table: "OrderDetails",
+                column: "orderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_productId",
+                table: "OrderDetails",
+                column: "productId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Product_imageId",
                 table: "Product",
                 column: "imageId");
@@ -432,13 +573,19 @@ namespace TesteClient.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "OrderDetails");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Order");
+
+            migrationBuilder.DropTable(
                 name: "Product");
 
             migrationBuilder.DropTable(
                 name: "Adresses");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

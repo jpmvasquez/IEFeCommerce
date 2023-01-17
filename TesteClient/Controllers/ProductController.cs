@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using TesteClient.Data;
+using TesteClient.Data.ViewModels;
 using TesteClient.Models;
+using TesteClient.Models.ClientsRating;
 using TesteClient.Models.Products;
 
 namespace TesteClient.Controllers
@@ -41,6 +43,40 @@ namespace TesteClient.Controllers
             {
                 return NotFound();
             }
+
+
+
+            //if (id == null)
+            //    return BadRequest();
+
+            //Product product = _context.Product.Find(id);
+            //ProdRatingViewModel prodRatingVM = new ProdRatingViewModel();
+            //if (product == null)
+            //    return NotFound();
+
+            //prodRatingVM.productId = id.Value;
+            //prodRatingVM.productName = product.name;
+            //List<ProductRating> prodRatings = _context.ProductRating
+            //    .Where(pr => pr.productId == id.Value).ToList();
+            //prodRatingVM.productRatings = prodRatings;
+
+            //List<ProductRating> prodComments = _context.ProductRating
+            //    .Where(pr => pr.productId == id.Value).ToList();
+            //if (prodComments.Count() > 0)
+            //{
+            //    var ratingSum = prodComments.Sum(pc => pc.rating);
+            //    ViewBag.RatingSum = ratingSum;
+            //    var ratingCount = prodComments.Count();
+            //    ViewBag.RatingCount = ratingCount;
+            //}
+            //else
+            //{
+            //    ViewBag.RatingSum = 0;
+            //    ViewBag.RatingCount = 0;
+            //}
+
+            //return View(prodRatingVM);
+
 
             var product = await _context.Product
                 .Include(p => p.productBrand)

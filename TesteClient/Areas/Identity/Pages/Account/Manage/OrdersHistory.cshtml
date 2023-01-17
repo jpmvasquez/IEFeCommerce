@@ -35,11 +35,13 @@
                             <ul style="list-style-type:none">
                                 @foreach (var item in order.orderItems)
                                 {
-                                        <li>
+                                    <li>
+                                        <a asp-action="Create" asp-controller="ProductRating" asp-route-id="@item.productId">
                                             <div class="alert alert-info" role="alert">
                                                 <span class="badge bg-success">@item.qty</span> @item.price.ToString("c") - @item.product.name
                                             </div>
-                                        </li>
+                                        </a>
+                                    </li>
                                 }
                             </ul>
                         </td>

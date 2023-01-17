@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TesteClient.Models.ClientsRating;
 
 namespace TesteClient.Models.Products;
 
@@ -40,6 +41,8 @@ public class Product
     public int productBrandId { get; set; }
     [ForeignKey("productBrandId")]
     public Brand productBrand { get; set; }
+
+    public List<ProductRating> productRatings { get; set; }
 
     //public Product(int id, string name, string price, ProductDetails productDetails, 
     //    Image image, ProductType productType, Techno productTechno, Brand productBrand)

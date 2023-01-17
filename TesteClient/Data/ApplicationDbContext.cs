@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TesteClient.Models;
+using TesteClient.Models.ClientsRating;
 using TesteClient.Models.Commands;
 using TesteClient.Models.Products;
 
@@ -78,5 +79,6 @@ namespace TesteClient.Data
 
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<Order> Order { get; set; }
+        public DbSet<ProductRating> ProductRating { get; set; }
     }
 }

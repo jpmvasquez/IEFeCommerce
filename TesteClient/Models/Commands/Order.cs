@@ -12,9 +12,12 @@ namespace TesteClient.Models.Commands
     {
         public enum eOrderStatus
         {
-            inPreparation,
+            [Display(Name = "En Préparation")]
+            underPreparation,
+            [Display(Name = "Expédié")]
             sent,
-            PartialSent
+            [Display(Name = "Partiellement Expédié")]
+            partialSent
         }
 
         [Key]

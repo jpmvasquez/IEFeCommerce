@@ -17,7 +17,7 @@ namespace TesteClient.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -299,17 +299,17 @@ namespace TesteClient.Migrations
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Civility = 0,
-                            ConcurrencyStamp = "db5ca169-7658-46fa-bc44-8f37ac5bcdbe",
+                            ConcurrencyStamp = "73a95296-5c89-4018-ab14-42e332163ce7",
                             Email = "Admin@test.com",
                             EmailConfirmed = true,
                             FirstName = "MONTIZA",
                             LastName = "Tira",
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN@TEST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHYsGF9dMl8YWRz8GpqV0vByRDybyqWXcRHYVokzg9lAAWwRFHTQoSfJOovu+FkmfA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHfdR5iQ5usrrIQm3log5lH8puxn1UiFgK353cqdLs6i591Pd5JYm/ZibXcCOB1yAQ==",
                             PhoneNumber = "0666673314",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "311b37bf-ff6a-43f2-8bf8-10a6e94acaec",
+                            SecurityStamp = "2f419e28-cbde-44ee-a82e-d7f98ceacc30",
                             TwoFactorEnabled = false,
                             UserName = "Admin@test.com"
                         });
@@ -380,6 +380,9 @@ namespace TesteClient.Migrations
 
                     b.Property<DateTime>("orderDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("orderStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("reference")
                         .IsRequired()

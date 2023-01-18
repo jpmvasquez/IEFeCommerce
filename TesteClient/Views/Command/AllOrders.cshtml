@@ -1,5 +1,5 @@
 ﻿@using TesteClient.Models.Commands
-@model IEnumerable<Order>
+@model List<Order>
 @{
     ViewData["Title"] = "Toutes les commandes";
 }
@@ -26,14 +26,21 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var order in Model)
+                @*@foreach (var order in Model)*@
+                @for (int i = 0; i < Model.Count; i++)
                 {
+                        <input hidden asp-for="@Model[i].id">
+                        <input hidden asp-for="@Model[i].userId">
+                        <input hidden asp-for="@Model[i].totalPrice">
+                        <input hidden asp-for="@Model[i].orderDate">
+                        <input hidden asp-for="@Model[i].addressId">
+                        <input hidden asp-for="@Model[i].reference">
                     <tr>
-                        <td class="align-middle">@order.reference</td>
-                        <td class="align-middle">@order.orderDate</td>
+                        <td class="align-middle">@Model[i].reference</td>
+                        <td class="align-middle">@Model[i].orderDate</td>
                         <td class="align-middle">
                             <ul style="list-style-type:none">
-                                @foreach (var item in order.orderItems)
+                                    @foreach (var item in Model[i].orderItems)
                                 {
                                     <li>
                                         <div class="alert alert-info" role="alert">
@@ -44,15 +51,17 @@
                             </ul>
                         </td>
                         <td class="align-middle">
-                            @order.orderItems.Select(oi => decimal.Parse(oi.product.price) * oi.qty).Sum().ToString("c")
+                            @Model[i].orderItems.Select(oi => decimal.Parse(oi.product.price) * oi.qty).Sum().ToString("c")
                         </td>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("SUPERADMIN"))
                         {
-                            <td class="align-middle"> @order.user.FullName </td>
+                                <td class="align-middle"> @Model[i].user.FullName </td>
                         }
-                        <td class="align-middle">@order.address.FullAddress</td>
+                            <td class="align-middle">@Model[i].address.FullAddress</td>
                             <td class="align-middle">
-                            <select asp-for="@order.orderStatus" asp-items="@Html.GetEnumSelectList<Order.eOrderStatus>()" />
+                                <select asp-for="@Model[i].orderStatus" asp-items="@Html.GetEnumSelectList<Order.eOrderStatus>()">
+                                    <option selected="selected" value="@@Model[i].orderStatus"></option>
+                            </select>
                         </td>
                     </tr>
                 }

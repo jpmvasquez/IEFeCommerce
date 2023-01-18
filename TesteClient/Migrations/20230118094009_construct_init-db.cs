@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TesteClient.Migrations
 {
-    public partial class init : Migration
+    public partial class construct_initdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -282,7 +282,8 @@ namespace TesteClient.Migrations
                     orderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     addressId = table.Column<int>(type: "int", nullable: false),
                     totalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    reference = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    reference = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    orderStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -378,6 +379,28 @@ namespace TesteClient.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProductRating",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    publishedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    productId = table.Column<int>(type: "int", nullable: false),
+                    rating = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductRating", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_ProductRating_Product_productId",
+                        column: x => x.productId,
+                        principalTable: "Product",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -386,7 +409,7 @@ namespace TesteClient.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "Civility", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "02174cf0–9412–4cfe - afbf - 59f706d72cf6", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "4e2e6675-ba28-4cd4-aef6-7bd2755ca12c", "Admin@test.com", true, "MONTIZA", "Tira", false, null, null, "ADMIN@TEST.COM", "AQAAAAEAACcQAAAAELmLlG8F36eSIS0M/ZZjrxrVR9ZXljtax02q03OSaxTLPrkXc4DuGVSN10xueHuQ8w==", "0666673314", true, "dfda2bae-d67c-424c-9a8a-06917184aac1", false, "Admin@test.com" });
+                values: new object[] { "02174cf0–9412–4cfe - afbf - 59f706d72cf6", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "73a95296-5c89-4018-ab14-42e332163ce7", "Admin@test.com", true, "MONTIZA", "Tira", false, null, null, "ADMIN@TEST.COM", "AQAAAAEAACcQAAAAEHfdR5iQ5usrrIQm3log5lH8puxn1UiFgK353cqdLs6i591Pd5JYm/ZibXcCOB1yAQ==", "0666673314", true, "2f419e28-cbde-44ee-a82e-d7f98ceacc30", false, "Admin@test.com" });
 
             migrationBuilder.InsertData(
                 table: "Brand",
@@ -550,6 +573,11 @@ namespace TesteClient.Migrations
                 name: "IX_Product_productTypeId",
                 table: "Product",
                 column: "productTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductRating_productId",
+                table: "ProductRating",
+                column: "productId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -574,6 +602,9 @@ namespace TesteClient.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderDetails");
+
+            migrationBuilder.DropTable(
+                name: "ProductRating");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

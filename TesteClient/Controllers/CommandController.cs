@@ -76,10 +76,19 @@ namespace TesteClient.Controllers
             return View(orders);
         }
 
-        [HttpPost]
+
         public IActionResult UpdateOrders()
         {
             return View("AllOrders");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateOrders(List<Order> updatedOrders)
+        {
+            _context.Order.UpdateRange(updatedOrders);
+            _context.SaveChanges();
+            return RedirectToAction("AllOrders");
         }
 
         public IActionResult CompleteOrder()
@@ -125,7 +134,7 @@ namespace TesteClient.Controllers
             order.totalPrice = totalPrice;
             order.reference = string.Format($"{userId.Substring(5)}{order.orderDate.ToString()}");
             //_context.Order.Add(order);
-            order.orderStatus = Order.eOrderStatus.inPreparation;
+            order.orderStatus = Order.eOrderStatus.underPreparation;
             _context.Order.Add(order);
             foreach (var item in _orderItems)
             {

@@ -73,12 +73,12 @@ namespace TesteClient.Controllers
         }
 
         // GET: ProductRating/Create
-        public IActionResult Create(int id)
+        public IActionResult Create(int productId)
         {
             ProdRatingViewModel prodRatingVM = new ProdRatingViewModel();
             Product product = _context.Product
-                .FirstOrDefault(p => p.id == id);
-            prodRatingVM.productId = id;
+                .FirstOrDefault(p => p.id == productId);
+            prodRatingVM.productId = productId;
             prodRatingVM.productName = product.name;
             return View(prodRatingVM);
         }
@@ -88,15 +88,17 @@ namespace TesteClient.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,comment,publishedDate,productId,rating")] ProductRating productRating)
+        public async Task<IActionResult> Create(/*[Bind("id,comment,publishedDate,productId,rating")]*/ ProductRating productRating)
         {
+            productRating.publishedDate = DateTime.Now;
+            //productRating.id = 0;
             if (ModelState.IsValid)
             {
                 _context.Add(productRating);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["productId"] = new SelectList(_context.Product, "id", "name", productRating.productId);
+            //ViewData["productId"] = new SelectList(_context.Product, "id", "name", productRating.productId);
             return View(productRating);
         }
 

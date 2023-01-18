@@ -12,14 +12,14 @@ using TesteClient.Data;
 namespace TesteClient.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230114124615_init")]
-    partial class init
+    [Migration("20230118094009_construct_init-db")]
+    partial class construct_initdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -301,17 +301,17 @@ namespace TesteClient.Migrations
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Civility = 0,
-                            ConcurrencyStamp = "4e2e6675-ba28-4cd4-aef6-7bd2755ca12c",
+                            ConcurrencyStamp = "73a95296-5c89-4018-ab14-42e332163ce7",
                             Email = "Admin@test.com",
                             EmailConfirmed = true,
                             FirstName = "MONTIZA",
                             LastName = "Tira",
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN@TEST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELmLlG8F36eSIS0M/ZZjrxrVR9ZXljtax02q03OSaxTLPrkXc4DuGVSN10xueHuQ8w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHfdR5iQ5usrrIQm3log5lH8puxn1UiFgK353cqdLs6i591Pd5JYm/ZibXcCOB1yAQ==",
                             PhoneNumber = "0666673314",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "dfda2bae-d67c-424c-9a8a-06917184aac1",
+                            SecurityStamp = "2f419e28-cbde-44ee-a82e-d7f98ceacc30",
                             TwoFactorEnabled = false,
                             UserName = "Admin@test.com"
                         });
@@ -341,6 +341,34 @@ namespace TesteClient.Migrations
                     b.ToTable("ApplicationUserAdresse");
                 });
 
+            modelBuilder.Entity("TesteClient.Models.ClientsRating.ProductRating", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<string>("comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("productId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("publishedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("productId");
+
+                    b.ToTable("ProductRating");
+                });
+
             modelBuilder.Entity("TesteClient.Models.Commands.Order", b =>
                 {
                     b.Property<int>("id")
@@ -354,6 +382,9 @@ namespace TesteClient.Migrations
 
                     b.Property<DateTime>("orderDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("orderStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("reference")
                         .IsRequired()
@@ -763,6 +794,17 @@ namespace TesteClient.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("TesteClient.Models.ClientsRating.ProductRating", b =>
+                {
+                    b.HasOne("TesteClient.Models.Products.Product", "product")
+                        .WithMany("productRatings")
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("product");
+                });
+
             modelBuilder.Entity("TesteClient.Models.Commands.Order", b =>
                 {
                     b.HasOne("TesteClient.Models.Adresse", "address")
@@ -857,6 +899,11 @@ namespace TesteClient.Migrations
             modelBuilder.Entity("TesteClient.Models.Commands.Order", b =>
                 {
                     b.Navigation("orderItems");
+                });
+
+            modelBuilder.Entity("TesteClient.Models.Products.Product", b =>
+                {
+                    b.Navigation("productRatings");
                 });
 #pragma warning restore 612, 618
         }

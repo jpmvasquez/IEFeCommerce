@@ -1,0 +1,66 @@
+﻿@using TesteClient.Models.Commands;
+@model Order;
+
+@{
+    ViewData["Title"] = "Résumé de vos commandes";
+    decimal totalPrice = 0;
+    @foreach (var item in Model.orderItems)
+    {
+        totalPrice += item.price;
+    }
+}
+<script src="~/js/jquery/jquery.min.js"></script>
+
+<div class="row" id="PdfContainer">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1 class="align-content-end">Détail de votre commande du @Model.orderDate</h1>
+            <h2>n° de référence: @Model.reference</h2>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Quantité</th>
+                    <th>Produit</th>
+                    <th>Prix</th>
+                    <th>Sous Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.orderItems)
+                {
+                    <tr>
+                        <td class="align-middle">@item.qty</td>
+                        <td class="align-middle">@item.product.name</td>
+                        <td class="align-middle">@item.product.price.ToString() + euros</td>
+                        <td class="align-middle">@item.price.ToString("c")</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b>Total:</b></td>
+                    <td name="@totalPrice">
+                        @totalPrice.ToString("c")
+                    </td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    @*<a asp-page="Identity/Pages/Account/Manage/OrdersHistory">Retour à l'historique de vos commandes'</a>*@
+</div>
+<button id="btnPdf" class="btn btn-primary">Créer un PDF</button>
+
+<script type="text/javascript">
+    $("#btnPdf").click(function () {
+        var sHtml = $("#PdfContainer").html();
+        sHtml = sHtml.replace(/</g, "StrTag").replace(/</g, "EndTag");
+        window.open('/Command/ConvertPdf?html=' + sHtml, '_blanc');
+    });
+
+</script>
+
+

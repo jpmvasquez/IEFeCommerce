@@ -10,6 +10,13 @@ namespace TesteClient.Models.Commands
 {
     public class Order
     {
+        public enum eOrderStatus
+        {
+            inPreparation,
+            sent,
+            PartialSent
+        }
+
         [Key]
         public int id { get; set; }
 
@@ -31,6 +38,7 @@ namespace TesteClient.Models.Commands
 
         public string reference { get; set; }/* => string.Format($"{userId.Substring(5)}{orderDate.ToString()}{id.ToString()}");*/
 
+        public eOrderStatus orderStatus { get; set; }
         public Order() { }
     }
 }

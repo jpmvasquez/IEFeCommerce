@@ -1,9 +1,7 @@
-@page
-@model OrdersHistoryModel
-
-@{ 
-    ViewData["Title"] = "Historiques de vos commandes";
-    ViewData["ActivePage"] = ManageNavPages.Index;
+ï»¿@using TesteClient.Models.Commands
+@model IEnumerable<Order>
+@{
+    ViewData["Title"] = "Toutes les commandes";
 }
 
 <div class="row">
@@ -11,38 +9,36 @@
         <p>
             <h4>List de vos commandes</h4>
         </p>
-
+        <form asp-controller="Command" asp-action="UpdateOrders" enctype="multipart/form-data">
         <table class="table">
             <thead>
                 <tr>
-                    <th>Référence</th>
+                    <th>RÃ©fÃ©rence</th>
                     <th>Date d'achat</th>
                     <th>Produit(s)</th>
                     <th>Total</th>
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("SUPERADMIN"))
                     {
-                            <th>User</th>
+                        <th>Utilisateur</th>
                     }
                     <th>Adresse</th>
                     <th>Statut</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var order in Model.Input.orders)
+                @foreach (var order in Model)
                 {
                     <tr>
-                        <td class="align-middle"><a asp-controller="Command" asp-action="OrderDetails" asp-route-id="@order.id">@order.reference</a></td>
+                        <td class="align-middle">@order.reference</td>
                         <td class="align-middle">@order.orderDate</td>
                         <td class="align-middle">
                             <ul style="list-style-type:none">
                                 @foreach (var item in order.orderItems)
                                 {
                                     <li>
-                                        <a asp-action="Create" asp-controller="ProductRating" asp-route-id="@item.productId">
-                                            <div class="alert alert-info" role="alert">
-                                                <span class="badge bg-success">@item.qty</span> @item.price.ToString("c") - @item.product.name
-                                            </div>
-                                        </a>
+                                        <div class="alert alert-info" role="alert">
+                                            <span class="badge bg-success">@item.qty</span> @item.price.ToString("c") - @item.product.name
+                                        </div>
                                     </li>
                                 }
                             </ul>
@@ -50,15 +46,21 @@
                         <td class="align-middle">
                             @order.orderItems.Select(oi => decimal.Parse(oi.product.price) * oi.qty).Sum().ToString("c")
                         </td>
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("SUPERADMIN"))
                         {
-                                <td class="align-middle"> @order.user.FullName </td>
+                            <td class="align-middle"> @order.user.FullName </td>
                         }
                         <td class="align-middle">@order.address.FullAddress</td>
-                        <td class="align-middle">@order.orderStatus</td>
+                            <td class="align-middle">
+                            <select asp-for="@order.orderStatus" asp-items="@Html.GetEnumSelectList<Order.eOrderStatus>()" />
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
+            <button type="submit" class="btn btn-outline-primary" asp-controller="Command" asp-action="UpdateOrders">
+                Enregistrer la commande
+            </button>
+        </form>
     </div>
 </div>

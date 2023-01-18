@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using TesteClient.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Build.Execution;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using SelectPdf;
 
 namespace TesteClient.Controllers
 {
@@ -39,6 +41,45 @@ namespace TesteClient.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult OrderDetails(int id)
+        {
+            Order order = _context.Order
+                            .Include(o => o.orderItems)
+                            .Where(od => od.id == id)
+                            .First();
+            return View("OrderDetails", order);
+        }
+
+        public IActionResult ConvertPdf(string html)
+        {
+
+
+            html = html.Replace("StrTag", "<").Replace("EndTag", ">");
+            HtmlToPdf oHtmlToPdf = new HtmlToPdf();
+            PdfDocument oPdfDpcument = oHtmlToPdf.ConvertHtmlString(html);
+            Byte[] pdf = oPdfDpcument.Save();
+            oPdfDpcument.Close();
+            return File(pdf, "application/pdf");
+        }
+
+        public IActionResult AllOrders()
+        {
+            List<Order> orders = _context.Order
+                                        .Include(o => o.address)
+                                        .Include(o => o.orderItems)
+                                        .ThenInclude(oi => oi.product)
+                                        .OrderByDescending(o => o.orderDate)
+                                        .ToList();
+            return View(orders);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateOrders()
+        {
+            return View("AllOrders");
         }
 
         public IActionResult CompleteOrder()
@@ -84,6 +125,7 @@ namespace TesteClient.Controllers
             order.totalPrice = totalPrice;
             order.reference = string.Format($"{userId.Substring(5)}{order.orderDate.ToString()}");
             //_context.Order.Add(order);
+            order.orderStatus = Order.eOrderStatus.inPreparation;
             _context.Order.Add(order);
             foreach (var item in _orderItems)
             {

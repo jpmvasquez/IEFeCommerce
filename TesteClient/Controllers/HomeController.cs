@@ -29,6 +29,7 @@ namespace TesteClient.Controllers
         // GET: HomeController1
         public ActionResult Index()
         {
+            ViewData["brands"] = _context.Brand.ToList();
             _productsList = _context.Product
                 .Include(p => p.image)
                 .Include(p => p.productDetails)

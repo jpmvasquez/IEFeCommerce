@@ -60,8 +60,14 @@
                 <div class="div1">
                     <p></p>
                     <div class="list-group">
-
-
+                        <span>Filtrer par marques:</span>
+                        @foreach(Brand brand in ViewBag.brands)
+                        {
+                            <label>
+                    <input type="checkbox" name="@brand.id" value="@brand.id" />
+                    <span>@brand.name</span>
+                    </label>
+                        }
                         <a href="#" class="list-group-item list-group-item-action list-group-item-light">Appareil photo Reflex</a>
                         <a href="#" class="list-group-item list-group-item-action list-group-item-light">Appareil photo Hybride</a>
                         <a href="#" class="list-group-item list-group-item-action list-group-item-light">Appareil photo Bridge</a>
